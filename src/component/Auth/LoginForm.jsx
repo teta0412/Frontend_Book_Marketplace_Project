@@ -10,8 +10,8 @@ const initialValues={
 
 export const LoginForm = () => {
     const navigate = useNavigate()
-    const handleSubmit=()=>{
-
+    const handleSubmit=(values)=>{
+        console.log("form values",values)
     }
   return (
     <div>
@@ -35,6 +35,7 @@ export const LoginForm = () => {
                 fullWidth
                 variant="outlined"
                 margin="normal"
+                type="password"
                 />
                 <Button sx={{mt:2, padding:"1rem"}} fullWidth type="submit" variant='contained'>Login</Button>
             </Form>

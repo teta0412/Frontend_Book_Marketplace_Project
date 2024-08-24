@@ -12,8 +12,8 @@ const initialValues={
 
 export const RegisterForm = () => {
     const navigate = useNavigate()
-    const handleSubmit=()=>{
-
+    const handleSubmit=(values)=>{
+        console.log("form values",values)
     }
   return (
     <div>
@@ -45,6 +45,7 @@ export const RegisterForm = () => {
                 fullWidth
                 variant="outlined"
                 margin="normal"
+                type="password"
                 />
                 <Field
                 fullWidth
