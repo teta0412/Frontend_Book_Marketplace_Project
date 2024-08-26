@@ -1,6 +1,6 @@
 import axios from "axios"
 import { api, API_URL } from "../../config/api"
-import { REGISTER_REQUEST, REGISTER_SUCCESS } from "./Reducer"
+import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionTypes"
 
 export const registerUser=(reqData)=>async(dispatch)=>{
     dispatch({type:REGISTER_REQUEST})
@@ -15,6 +15,7 @@ export const registerUser=(reqData)=>async(dispatch)=>{
         dispatch({type:REGISTER_SUCCESS,payload:data.jwt})
         console.log("register success",data)
     } catch (error) {
+        dispatch({type:REGISTER_FAILURE,payload:error})
         console.log("error",error)
     }
 }
@@ -32,6 +33,7 @@ export const loginUser=(reqData)=>async(dispatch)=>{
         dispatch({type:LOGIN_SUCCESS,payload:data.jwt})
         console.log("login success",data)
     } catch (error) {
+        dispatch({type:LOGIN_FAILURE,payload:error})
         console.log("error",error)
     }
 }
@@ -39,13 +41,24 @@ export const loginUser=(reqData)=>async(dispatch)=>{
 export const getUser=(jwt)=>async(dispatch)=>{
     dispatch({type:GET_USER_REQUEST})
     try {
-        const {data} = await api.post(`/auth/signup`,{
+        const {data} = await api.get(`/api/users/profile`,{
             headers:{
                 Authorization:`Bearer ${jwt}`
             }
         })
-        dispatch({type:LOGIN_SUCCESS,payload:data.jwt})
+        dispatch({type:GET_USER_SUCCESS,payload:data})
         console.log("user profile",data)
+    } catch (error) {
+        dispatch({type:GET_USER_FAILURE,payload:error})
+        console.log("error",error)
+    }
+}
+
+export const logout=()=>async(dispatch)=>{
+    try {
+        localStorage.clear()
+        dispatch({type:LOGOUT})
+        console.log("logout success")
     } catch (error) {
         console.log("error",error)
     }

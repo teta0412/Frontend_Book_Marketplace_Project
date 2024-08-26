@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Auth } from '../Auth/Auth'
+import { getAllStoresAction } from '../State/Store/Action'
 import StoreCard from '../Store/StoreCard'
 import "./Home.css"
 import MultiItemCarousel from './MultiItemCarousel'
-const store = [1,1,1,1,1,1,1]
+const stores = [1,1,1,1,1,1,1]
 const Home = () => {
+    const dispatch = useDispatch()
+    const jwt = localStorage.getItem("jwt")
+    const {store} = useSelector(store=>store)
+    useEffect(()=>{
+        dispatch(getAllStoresAction(jwt))
+    },[])
   return (
     <div className='pb-10'>
         <section className='banner -z-50 relative flex flex-col justify-center items-center'>
@@ -25,7 +33,7 @@ const Home = () => {
             </h1>
             <div className='flex flex-wrap items-center justify-around gap-5'>
                 {
-                    store.map((item)=><StoreCard/>)
+                    store.stores.map((item)=><StoreCard item={item}/>)
                 }
             </div>
         </section>

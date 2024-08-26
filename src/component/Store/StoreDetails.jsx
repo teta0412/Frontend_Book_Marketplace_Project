@@ -3,6 +3,10 @@ import React, { useState } from 'react'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import MenuCard from './MenuCard';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getStoreById } from '../State/Store/Action';
+import { useDispatch, useSelector } from 'react-redux';
 
 const categories = [
     "horror",
@@ -22,11 +26,20 @@ const bookTypes = [
 const menu=[1,1,1,1,1,1,1]
 
 const StoreDetails = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const {auth,store} = useSelector(store=>store)
+    const jwt = localStorage.getItem("jwt")
+    const {id} = useParams();
     const [bookType,setBookType] = useState("all")
 
     const handleFilter=(e)=>{
         console.log(e.target.value,e.target.name)
     }
+    console.log("store",store)
+    useEffect(()=>{
+        dispatch(getStoreById({jwt,storeId:id}))
+    },[])
 
   return (
     <div className='px-5 lg:px-20'>
@@ -37,26 +50,26 @@ const StoreDetails = () => {
                     <Grid item xs={12} >
                         <img 
                             className='w-full h-[40vh] object-cover' 
-                            src="https://aeonmall-hadong.com.vn/wp-content/uploads/2019/08/dsc01484-750x468.jpg" 
+                            src={store.store?.images[0]}
                             alt="" />
                     </Grid>
                     <Grid item xs={12} lg={6}>
                         <img 
                             className='w-full h-[40vh] object-cover' 
-                            src="https://image.vietnamnews.vn/uploadvnnews/Article/2016/4/29/fahasa33234518PM.jpg" 
+                            src= {store.store?.images[1]}
                             alt="" />
                     </Grid>
                     <Grid item xs={12} lg={6}>
                         <img 
                             className='w-full h-[40vh] object-cover' 
-                            src="https://media.doanhnhantrevietnam.vn/files/content/2022/11/17/4322dc7f9ddb5b8502ca-1932.jpg" 
+                            src={store.store?.images[2]}
                             alt="" />
                     </Grid>
                 </Grid>
             </div>
             <div className='pt-3 pb-5'>
-                <h1 className='text-4xl font-semibold'>Fahasa Book Store</h1>
-                <p className='text-gray-500 mt-1'>Description</p>
+                <h1 className='text-4xl font-semibold'>{store.store?.name}</h1>
+                <p className='text-gray-500 mt-1'>{store.store?.description}</p>
                 <div className='space-y-3 mt-3'>
                     <p className='text-gray-500 flex items-center gap-3'>
                         <LocationOnIcon></LocationOnIcon>
