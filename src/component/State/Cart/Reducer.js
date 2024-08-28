@@ -24,7 +24,8 @@ const cartReducer = (state = initialState, action) =>{
             return {
                 ...state,
                 loading:false,
-                cartItems:[action.payload, ...state.cartItems]
+                cart:action.payload,
+                cartItems:action.payload.item
             }
         case actionTypes.ADD_ITEM_TO_CART_SUCCESS:
             return {
@@ -36,8 +37,8 @@ const cartReducer = (state = initialState, action) =>{
             return {
                 ...state,
                 loading:false,
-                cartItems:state.cartItems.map((item)=>
-                item.id === action.payload.id ? action.payload : item
+                cartItems:state.cartItems?.map((item)=>
+                    item.id === action.payload.id ? action.payload : item
                 )
             }
         case actionTypes.REMOVE_CART_ITEM_SUCCESS:

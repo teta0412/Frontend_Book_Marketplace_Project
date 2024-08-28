@@ -5,17 +5,10 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import MenuCard from './MenuCard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getStoreById } from '../State/Store/Action';
+import { getStoreById, getStoresCategory } from '../State/Store/Action';
 import { useDispatch, useSelector } from 'react-redux';
+import { getMenuItemsByStoreId } from '../State/Menu/Action';
 
-const categories = [
-    "horror",
-    "academic",
-    "science-fiction",
-    "fantasy",
-    "history",
-    "romance"
-]
 
 const bookTypes = [
     {label:"All",value:"all"},
@@ -23,23 +16,39 @@ const bookTypes = [
     {label:"Novel",value:"novel"}
 ]
 
-const menu=[1,1,1,1,1,1,1]
-
 const StoreDetails = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {auth,store} = useSelector(store=>store)
+    const {auth, store, menu} = useSelector(store=>store)
     const jwt = localStorage.getItem("jwt")
     const {id} = useParams();
     const [bookType,setBookType] = useState("all")
+    const [selectedCategory,setSelectedCategory] = useState("")
+
+    const resetBookCategory = (e) => {
+        setSelectedCategory("")
+    }
 
     const handleFilter=(e)=>{
+        setBookType(e.target.value);
+        console.log(e.target.value,e.target.name)
+    }
+    const handleFilterCategory=(e,value)=>{
+        setSelectedCategory(value)
         console.log(e.target.value,e.target.name)
     }
     console.log("store",store)
     useEffect(()=>{
         dispatch(getStoreById({jwt,storeId:id}))
-    },[])
+        dispatch(getStoresCategory({jwt,storeId:id}))
+        dispatch(getMenuItemsByStoreId({
+            jwt,
+            storeId:id,
+            available:false,
+            comic:bookType==="comic",
+            novel:bookType==="novel",
+            bookCategory:selectedCategory}))
+    },[selectedCategory,bookType])
 
   return (
     <div className='px-5 lg:px-20'>
@@ -77,7 +86,7 @@ const StoreDetails = () => {
                     </p>
                     <p className='text-gray-500 flex items-center gap-3'>
                         <CalendarTodayIcon></CalendarTodayIcon>
-                        <span>Open Hours</span>
+                        <span>{store.store?.openingHours}</span>
                     </p>
                     </div>
             </div>
@@ -108,13 +117,18 @@ const StoreDetails = () => {
                             Book Category
                         </Typography>
                         <FormControl className='py-10 space-y-5' component={"fieldset"}>
-                            <RadioGroup onChange={handleFilter} name='book_type' value={categories}>
-                                {categories.map((item)=> (
+                            <RadioGroup 
+                            onClick={resetBookCategory}
+                            onChange={handleFilterCategory} 
+                            name='book_category' 
+                            value={selectedCategory}
+                            >
+                                {store.categories.map((item)=> (
                                 <FormControlLabel 
                                     key= {item}
-                                    value={item} 
+                                    value={item.name} 
                                     control={<Radio/>} 
-                                    label={item}/> 
+                                    label={item.name}/> 
                                 ))}
                             </RadioGroup>
                         </FormControl>
@@ -122,7 +136,7 @@ const StoreDetails = () => {
                 </div>
             </div>
             <div className='space-y-5 lg:w-[80%] lg:pl-10'>
-                {menu.map((item) => <MenuCard/>)}
+                {menu.menuItems.map((item) => <MenuCard item={item}/>)}
             </div>
         </section>
     </div>

@@ -1,4 +1,4 @@
-import { api } from "../../component/config/api"
+import { api } from "../../config/api"
 import { CREATE_MENU_ITEM_FAILURE, CREATE_MENU_ITEM_REQUEST, CREATE_MENU_ITEM_SUCCESS, DELETE_MENU_ITEM_FAILURE, DELETE_MENU_ITEM_REQUEST, DELETE_MENU_ITEM_SUCCESS, GET_MENU_ITEMS_BY_STORE_ID_FAILURE, GET_MENU_ITEMS_BY_STORE_ID_REQUEST, GET_MENU_ITEMS_BY_STORE_ID_SUCCESS, SEARCH_MENU_ITEM_FAILURE, SEARCH_MENU_ITEM_REQUEST, SEARCH_MENU_ITEM_SUCCESS, UPDATE_MENU_ITEMS_AVAILABILITY_FAILURE, UPDATE_MENU_ITEMS_AVAILABILITY_REQUEST, UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS } from "./ActionTypes";
 
 export const createMenuItem = ({menu,jwt}) =>{
@@ -30,13 +30,13 @@ export const getMenuItemsByStoreId = (reqData) =>{
                 },
             });
             dispatch({type:GET_MENU_ITEMS_BY_STORE_ID_SUCCESS,payload:data});
+            console.log("menu items",data)
         } catch (error) {
             console.log("catch error",error)
             dispatch({type:GET_MENU_ITEMS_BY_STORE_ID_FAILURE,payload:error});
         }
     }
 }
-
 
 export const searchMenuItem = ({keyword,jwt}) =>{
     return async (dispatch) =>{

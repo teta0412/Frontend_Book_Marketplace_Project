@@ -1,8 +1,23 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../State/Cart/Action';
 
-const MenuCard = () => {
+const MenuCard = ({item}) => {
+  const dispatch = useDispatch()
+  const handleAddItemToCart = (e)=>{
+    e.preventDefault()
+    const reqData ={
+      token:localStorage.getItem('jwt'),
+      cartItem:{
+        bookId:item.id,
+        quantity:1,
+      }
+    }
+    dispatch(addItemToCart(reqData))
+    console.log("req data",reqData)
+  }
   return (
     <Accordion>
         <AccordionSummary
@@ -14,19 +29,19 @@ const MenuCard = () => {
             <div className='lg:flex items-center lg:gap-5'>
                 <img 
                     className='w-[7rem] h-[10rem] object-cover' 
-                    src="https://product.hstatic.net/200000343865/product/1_d295818bf0c54c01a64027f9c986b891_master.jpg" 
+                    src={item.images[0]} 
                     alt="" />
                 <div className='space-y-3 lg:space-y-5 lg:max-w-2xl'>
-                    <p className='font-semibold text-xl'>Solo Leveling</p>
-                    <p>9$</p>
-                    <p className='text-gray-400'>SUNG JIN WOO, THỢ SĂN HẠNG E YẾU ỚT BẬC NHẤT nghèo khổ, tài năng không có mà cũng chẳng được ai chống lưng. Trong một chuyến công phá để kiếm kế sinh nhai, cậu tình cờ tìm thấy HẦM NGỤC KÉP. Trên chiến trường tàn khốc, cậu đã lựa chọn con đường cô độc nhất…</p>
+                    <p className='font-semibold text-xl'>{item.name}</p>
+                    <p>{item.price}$</p>
+                    <p className='text-gray-400'>{item.description}</p>
                 </div>
             </div>
 
           </div>
         </AccordionSummary>
         <AccordionDetails>
-          <form>
+          <form onClick={handleAddItemToCart}>
             <div>
                 <Button variant='contained' disabled={false} type='submit'>
                     {true?"Add to Cart":"Out Of Stock"}

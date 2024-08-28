@@ -149,7 +149,7 @@ export const getAllEvents = ({jwt}) =>{
     return async (dispatch) =>{
         dispatch({type:GET_ALL_EVENTS_REQUEST})
         try {
-            const res = await api.put(`/api/events`,{
+            const res = await api.get(`/api/events`,{
                 headers:{
                     Authorization: `Bearer ${jwt}`,
                 },
@@ -221,7 +221,7 @@ export const getStoresCategory = ({jwt, storeId}) =>{
     return async (dispatch) =>{
         dispatch({type:GET_STORES_CATEGORY_REQUEST})
         try {
-            const res = await api.post(`/api/admin/stores/${storeId}`,{
+            const res = await api.get(`/api/category/store/${storeId}`,{
                 headers:{
                     Authorization: `Bearer ${jwt}`,
                 },

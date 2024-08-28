@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Auth } from '../Auth/Auth'
 import { getAllStoresAction } from '../State/Store/Action'
 import StoreCard from '../Store/StoreCard'
 import "./Home.css"
