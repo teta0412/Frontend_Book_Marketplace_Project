@@ -4,6 +4,7 @@ import { Auth } from '../component/Auth/Auth'
 import Cart from '../component/Cart/Cart'
 import Home from '../component/Home/Home'
 import { Navbar } from '../component/Navbar/Navbar'
+import { PaymentSuccess } from '../component/PaymentSuccess/PaymentSuccess'
 import Profile from '../component/Profile/Profile'
 import StoreDetails from '../component/Store/StoreDetails'
 
@@ -17,6 +18,7 @@ export const CustomerRouter = () => {
             <Route path='/store/:city/:title/:id' element={<StoreDetails/>}></Route>
             <Route path='/cart' element={<Cart/>}></Route>
             <Route path='/my-profile/*' element={<Profile/>}></Route>
+            <Route path='/payment/success/:id' element={<PaymentSuccess/>}></Route>
         </Routes>
         <Auth/>
     </div>
